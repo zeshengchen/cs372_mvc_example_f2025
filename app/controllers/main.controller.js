@@ -15,4 +15,11 @@ function showPosts(req, res) {
     res.render('pages/posts', { posts: posts })
 }
 
-export { showHome, showPosts }
+function showSingle(req, res) {
+    // get a single post
+    const post = { name: 'Homework', slug: 'homework', description: 'Homework is challenging!' }
+
+    res.render('pages/single', { post: post })
+}
+
+export { showHome, showPosts, showSingle }

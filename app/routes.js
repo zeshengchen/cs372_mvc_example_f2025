@@ -1,5 +1,5 @@
 import express from 'express'
-import { showHome, showPosts } from './controllers/main.controller.js'
+import { showHome, showPosts, showSingle } from './controllers/main.controller.js'
 
 // create a new express routes
 const router = express.Router()
@@ -14,3 +14,6 @@ router.get('/', showHome)
 
 // posts routes
 router.get('/posts', showPosts)
+
+// single post routes
+router.get('/posts/:slug', showSingle)
