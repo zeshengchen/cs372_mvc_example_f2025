@@ -3,4 +3,16 @@ function showHome(req, res) {
     res.render('pages/home')
 }
 
-export {showHome}
+function showPosts(req, res) {
+    // create dummy posts
+    const posts = [
+        { name: 'Homework', slug: 'homework', description: 'Homework is challenging!' },
+        { name: 'Lecture', slug: 'lecture', description: 'Lecture is fun!' },
+        { name: 'Project', slug: 'project', description: 'Course Project is great!' }
+    ]
+
+    // return a view with data
+    res.render('pages/posts', { posts: posts })
+}
+
+export { showHome, showPosts }
