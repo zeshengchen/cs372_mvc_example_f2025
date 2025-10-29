@@ -2,7 +2,7 @@
   "name": "cs372_mvc_example_f2025",
   "version": "1.0.0",
   "description": "Class demo to show MVC",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
