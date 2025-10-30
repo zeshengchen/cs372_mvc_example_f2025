@@ -1,12 +1,7 @@
 import Post from '../models/post.js'
 
 function showPosts(req, res) {
-    // create dummy posts
-    const posts = [
-        { name: 'Homework', slug: 'homework', description: 'Homework is challenging!' },
-        { name: 'Lecture', slug: 'lecture', description: 'Lecture is fun!' },
-        { name: 'Project', slug: 'project', description: 'Course Project is great!' }
-    ]
+    // get all posts
 
     // return a view with data
     res.render('pages/posts', { posts: posts })
@@ -19,4 +14,25 @@ function showSingle(req, res) {
     res.render('pages/single', { post: post })
 }
 
-export { showPosts, showSingle }
+async function seedPosts(req, res) {
+    // create some posts 
+    const list_posts = [
+        { name: 'Homework', description: 'Homework is challenging!' },
+        { name: 'Lecture', description: 'Lecture is fun!' },
+        { name: 'Project', description: 'Course Project is great!' }
+    ]
+
+    // use the Post model to insert/save
+    await Post.deleteMany({})
+
+    // use the Post model to insert/save
+    for (const aPost of list_posts) {
+        let newPost = new Post(aPost)
+        await newPost.save()
+    }
+
+    // seeded!
+    res.send('Database seeded!')
+}
+
+export { showPosts, showSingle, seedPosts}
