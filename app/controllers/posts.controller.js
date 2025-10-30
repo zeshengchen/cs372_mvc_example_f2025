@@ -1,19 +1,45 @@
 import Post from '../models/post.js'
 
-function showPosts(req, res) {
+/** 
+ * show all posts
+ */
+async function showPosts(req, res) {
     // get all posts
+    try {
+        const posts = await Post.find({})
 
-    // return a view with data
-    res.render('pages/posts', { posts: posts })
+        // return a view with data
+        res.render('pages/posts', { posts: posts })
+
+    } catch {
+        res.status(404)
+        res.send('Posts not found')
+    }
 }
 
-function showSingle(req, res) {
+/**
+ * show a single post
+ */
+async function showSingle(req, res) {
     // get a single post
-    const post = { name: 'Homework', slug: 'homework', description: 'Homework is challenging!' }
+    try {
+        const post = await Post.findOne({ slug: req.params.slug })
 
-    res.render('pages/single', { post: post })
+        if (post !== undefined && post !== null )
+            res.render('pages/single', { post: post })
+        else {
+            res.status(404)
+            res.send('Post not found!')
+        }
+    } catch {
+        res.status(404)
+        res.send('Post not found!')
+    }
 }
 
+/**
+ * seed db with some posts
+ */
 async function seedPosts(req, res) {
     // create some posts 
     const list_posts = [
