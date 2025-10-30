@@ -1,4 +1,5 @@
 import Post from '../models/post.js'
+import { check, validationResult } from 'express-validator'
 
 /** 
  * show all posts
@@ -25,8 +26,11 @@ async function showSingle(req, res) {
     try {
         const post = await Post.findOne({ slug: req.params.slug })
 
-        if (post !== undefined && post !== null )
-            res.render('pages/single', { post: post })
+        if (post !== undefined && post !== null)
+            res.render('pages/single', {
+                post: post,
+                success: req.flash('success')
+            })
         else {
             res.status(404)
             res.send('Post not found!')
@@ -65,13 +69,26 @@ async function seedPosts(req, res) {
  * Show the create form
  */
 function showCreate(req, res) {
-  res.render('pages/create')
+    res.render('pages/create', {
+        errors: req.flash('errors')
+    })
 }
 
 /**
  * Process the creation form
  */
 async function processCreate(req, res) {
+    // validate information
+    await check('name', 'Name is required').notEmpty().run(req)
+    await check('description', 'Description is required').notEmpty().run(req)
+
+    // if there are errors, redirect and save errors to flash
+    const errors = validationResult(req)
+    if (!errors.isEmpty()) {
+        req.flash('errors', errors.errors.map(err => err.msg))
+        return res.redirect('/posts/create')
+    }
+
     // create a new post
     const post = new Post({
         name: req.body.name,
@@ -81,6 +98,9 @@ async function processCreate(req, res) {
     // save post 
     try {
         await post.save()
+
+        // set a successful flash message
+        req.flash('success', 'Successfuly created post!')
         res.redirect(`/posts/${post.slug}`)
     } catch {
         res.status(500)
@@ -88,4 +108,4 @@ async function processCreate(req, res) {
     }
 }
 
-export { showPosts, showSingle, seedPosts, showCreate, processCreate}
+export { showPosts, showSingle, seedPosts, showCreate, processCreate }

@@ -7,6 +7,9 @@ import { fileURLToPath } from 'url'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import bodyParser from 'body-parser'
+import session from 'express-session'
+import cookieParser from 'cookie-parser'
+import flash from 'connect-flash'
 
 dotenv.config()
 
@@ -29,6 +32,16 @@ app.use(express.static(__dirname + '/public'))
 
 // use body parser to grab info from a form
 app.use(bodyParser.urlencoded({ extended: true }))
+
+// set sessions and cookie parser
+app.use(cookieParser())
+app.use(session({
+    secret: process.env.SECRET,
+    cookie: { maxAge: 60000 },
+    resave: false, // forces the session to be saved back to the store
+    saveUninitialized: false // dont save unmodified
+}))
+app.use(flash())
 
 // set ejs as our templating engine 
 app.set('view engine', 'ejs')
