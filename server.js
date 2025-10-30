@@ -4,8 +4,16 @@ import router from './app/routes.js'
 import expressEjsLayouts from 'express-ejs-layouts'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import mongoose from 'mongoose'
 
 // configure our application
+mongoose.connect('mongodb://localhost:27017/cs372-posts')
+    .then(() => console.log('DB connected!'))
+    .catch(() => {
+        console.log('Cannot connect to MongoDB!')
+        process.exit(1)
+    })
+
 const app = express()
 const port = process.env.PORT || 8080
 
