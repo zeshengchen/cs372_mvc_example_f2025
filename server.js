@@ -6,6 +6,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
+import bodyParser from 'body-parser'
 
 dotenv.config()
 
@@ -25,6 +26,9 @@ const __dirname = path.dirname(__filename) // get the name of the directory
 
 // tell express where to look for static assets
 app.use(express.static(__dirname + '/public'))
+
+// use body parser to grab info from a form
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // set ejs as our templating engine 
 app.set('view engine', 'ejs')

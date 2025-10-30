@@ -61,4 +61,31 @@ async function seedPosts(req, res) {
     res.send('Database seeded!')
 }
 
-export { showPosts, showSingle, seedPosts}
+/**
+ * Show the create form
+ */
+function showCreate(req, res) {
+  res.render('pages/create')
+}
+
+/**
+ * Process the creation form
+ */
+async function processCreate(req, res) {
+    // create a new post
+    const post = new Post({
+        name: req.body.name,
+        description: req.body.description
+    })
+
+    // save post 
+    try {
+        await post.save()
+        res.redirect(`/posts/${post.slug}`)
+    } catch {
+        res.status(500)
+        res.send('Post not saved!')
+    }
+}
+
+export { showPosts, showSingle, seedPosts, showCreate, processCreate}
