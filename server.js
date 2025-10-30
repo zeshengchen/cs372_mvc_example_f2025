@@ -5,9 +5,12 @@ import expressEjsLayouts from 'express-ejs-layouts'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import mongoose from 'mongoose'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 // configure our application
-mongoose.connect('mongodb://localhost:27017/cs372-posts')
+mongoose.connect(process.env.DB_URI)
     .then(() => console.log('DB connected!'))
     .catch(() => {
         console.log('Cannot connect to MongoDB!')
