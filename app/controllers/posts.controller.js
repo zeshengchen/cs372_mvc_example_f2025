@@ -162,4 +162,21 @@ async function processEdit(req, res) {
     }
 }
 
-export { showPosts, showSingle, seedPosts, showCreate, processCreate, showEdit, processEdit }
+/**
+ * Delete a post
+ */
+async function deletePost(req, res) {
+    try {
+        await Post.deleteOne({ slug: req.params.slug })
+
+        // set flash data
+        // redirect back to the posts page
+        req.flash('success', 'Post deleted')
+        res.redirect('/posts')
+    } catch {
+        res.status(500)
+        res.send('Post not deleted!')
+    }
+}
+
+export { showPosts, showSingle, seedPosts, showCreate, processCreate, showEdit, processEdit, deletePost }
